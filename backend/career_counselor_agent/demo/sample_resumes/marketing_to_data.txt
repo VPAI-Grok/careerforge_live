@@ -1,0 +1,36 @@
+Marcus Reed
+marcus.reed@email.com | linkedin.com/in/marcusreed | Vancouver, BC
+
+SUMMARY
+Results-driven Digital Marketing Manager with 5 years of experience, now pivoting
+toward a Data Analyst role. Passionate about turning raw data into actionable insights.
+
+EXPERIENCE
+
+Digital Marketing Manager — RetailCo (2021 – Present)
+- Managed $1.2M annual digital ad budget across Google Ads, Meta, and TikTok
+- Used Google Analytics and Looker Studio to create weekly performance dashboards
+  adopted by the entire marketing team of 12
+- A/B tested 40+ landing page variants, improving conversion rate from 2.1% to 4.7%
+- Built automated email campaigns in HubSpot, achieving 28% open rate (industry avg 21%)
+
+Marketing Analyst — Agency XYZ (2019 – 2021)
+- Compiled monthly client reports using Excel (VLOOKUP, PivotTables, charts)
+- Identified a $200K media spend inefficiency by cross-referencing campaign data
+- Assisted in migrating reporting from spreadsheets to Tableau (basic dashboards)
+
+EDUCATION
+B.A. Communications — Simon Fraser University (2019)
+
+SKILLS
+Analytics:    Google Analytics 4, Looker Studio, basic Tableau
+Spreadsheets: Excel (advanced), Google Sheets
+Coding:       Basic Python (completed Codecademy Python course), SQL (beginner — SELECT,
+              JOIN, WHERE)
+Marketing:    Google Ads, Meta Ads Manager, HubSpot, Mailchimp
+Soft Skills:  Storytelling with data, stakeholder presentations, cross-team collaboration
+
+CERTIFICATIONS
+- Google Analytics 4 Certification (2023)
+- HubSpot Marketing Software Certification (2022)
+- Completed: "Python for Everybody" — Coursera (2023)

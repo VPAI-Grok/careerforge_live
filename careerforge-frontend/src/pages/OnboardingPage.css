@@ -1,0 +1,439 @@
+/* ── Onboarding Page ──────────────────────────────────────────────────────── */
+
+/* ── From-Resume Badge ── */
+.from-resume {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--forge-success-light, #6EE7B7);
+    background: rgba(5, 150, 105, 0.12);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.onboarding {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.onboarding-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Header ── */
+.onboarding-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.onboarding-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.step-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* ── Progress Bar ── */
+.progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--bg-card);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--forge-primary), var(--forge-accent));
+    border-radius: 0 2px 2px 0;
+}
+
+/* ── Step Indicators ── */
+.step-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 20px 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.step-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
+}
+
+.step-pill.active {
+    background: rgba(79, 70, 229, 0.15);
+    border-color: var(--forge-primary);
+    color: var(--forge-primary-light);
+}
+
+.step-pill.done {
+    background: rgba(5, 150, 105, 0.12);
+    border-color: var(--forge-success);
+    color: var(--forge-success-light);
+}
+
+.step-pill-label {
+    display: inline;
+}
+
+/* ── Step Content ── */
+.step-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 20px 20px 100px;
+    position: relative;
+    z-index: 1;
+}
+
+.step-inner {
+    width: 100%;
+    max-width: 640px;
+}
+
+.step-inner h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.step-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+}
+
+/* ── Field Components ── */
+.field-group {
+    margin-bottom: 20px;
+}
+
+.field-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.field-input {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+.field-input:focus {
+    border-color: var(--forge-primary);
+}
+
+.field-input::placeholder {
+    color: var(--text-muted);
+}
+
+.field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.input-prefix {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.input-prefix span {
+    padding: 10px 12px;
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border-subtle);
+    border-right: none;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.input-prefix .field-input {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* ── Card Select ── */
+.card-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.card-option {
+    padding: 8px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.card-option:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-accent);
+}
+
+.card-option.selected {
+    background: rgba(79, 70, 229, 0.15);
+    border-color: var(--forge-primary);
+    color: var(--forge-primary-light);
+}
+
+/* ── Chip Grid ── */
+.chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    padding: 6px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.chip:hover {
+    background: var(--bg-card-hover);
+}
+
+.chip-active {
+    background: rgba(79, 70, 229, 0.15) !important;
+    border-color: var(--forge-primary) !important;
+    color: var(--forge-primary-light) !important;
+}
+
+.chip-active.chip-warn {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-color: var(--forge-danger) !important;
+    color: #FCA5A5 !important;
+}
+
+/* ── Tags ── */
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(79, 70, 229, 0.15);
+    border: 1px solid rgba(79, 70, 229, 0.25);
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    color: var(--forge-primary-light);
+}
+
+.tag-tech {
+    background: rgba(5, 150, 105, 0.12);
+    border-color: rgba(5, 150, 105, 0.25);
+    color: var(--forge-success-light);
+}
+
+.tag-soft {
+    background: rgba(124, 58, 237, 0.12);
+    border-color: rgba(124, 58, 237, 0.25);
+    color: var(--forge-accent-light);
+}
+
+.tag button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0 2px;
+    opacity: 0.7;
+}
+
+.tag button:hover {
+    opacity: 1;
+}
+
+/* ── Sliders ── */
+.slider-group {
+    margin-bottom: 24px;
+}
+
+.slider-group label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.slider-value {
+    color: var(--forge-primary-light);
+    font-weight: 700;
+}
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--bg-card-hover);
+    outline: none;
+    cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--forge-primary), var(--forge-accent));
+    border: 3px solid var(--bg-primary);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
+    transition: transform 0.15s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--forge-primary), var(--forge-accent));
+    border: 3px solid var(--bg-primary);
+    cursor: pointer;
+}
+
+.slider-danger::-webkit-slider-thumb {
+    background: linear-gradient(135deg, var(--forge-danger), #F97316);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+}
+
+.slider-danger::-moz-range-thumb {
+    background: linear-gradient(135deg, var(--forge-danger), #F97316);
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* ── Checkbox ── */
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.9rem !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--forge-primary);
+    cursor: pointer;
+}
+
+/* ── Footer ── */
+.onboarding-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-subtle);
+    z-index: 10;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    .field-row {
+        grid-template-columns: 1fr;
+    }
+
+    .step-pill-label {
+        display: none;
+    }
+
+    .step-indicators {
+        gap: 6px;
+    }
+
+    .step-pill {
+        padding: 6px 10px;
+    }
+}

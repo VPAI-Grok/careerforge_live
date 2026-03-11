@@ -1,0 +1,39 @@
+Jane Doe
+jane.doe@email.com | github.com/janedoe | linkedin.com/in/janedoe | Toronto, ON
+
+SUMMARY
+Motivated software developer with 3 years of experience building scalable web
+applications. Seeking to transition into a Machine Learning Engineering role.
+
+EXPERIENCE
+
+Software Developer — Shopify (2021 – Present)
+- Built and maintained RESTful APIs serving 2M+ daily active users using Python/Django
+- Reduced API latency by 35% through Redis caching and query optimisation
+- Collaborated with data team to integrate basic recommendation features
+- Mentored 2 junior developers; led fortnightly code review sessions
+
+Junior Developer — FinTech Startup (2020 – 2021)
+- Developed React dashboard used by 500+ financial advisors
+- Automated reporting pipeline saving 10 hrs/week of manual work using Python scripts
+- Deployed containerised microservices on AWS ECS
+
+EDUCATION
+B.Sc. Computer Science — University of Waterloo (2020)
+GPA 3.7/4.0 | Relevant courses: Data Structures, Algorithms, Linear Algebra, Statistics
+
+SKILLS
+Languages:   Python, JavaScript, TypeScript, SQL, Bash
+Frameworks:  Django, FastAPI, React, Node.js
+Data/ML:     NumPy, Pandas, basic scikit-learn (self-taught)
+Cloud/DevOps: AWS (EC2, S3, ECS), Docker, GitHub Actions
+Databases:   PostgreSQL, Redis, MongoDB
+
+CERTIFICATIONS
+- AWS Certified Developer – Associate (2022)
+- Google Analytics Certification (2021)
+
+PROJECTS
+- Personal ML project: built a movie recommendation model using collaborative
+  filtering (scikit-learn + Pandas) — 82% accuracy on MovieLens dataset
+- Open-source contribution: merged 2 PRs to a popular Python data library

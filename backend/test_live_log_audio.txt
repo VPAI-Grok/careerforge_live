@@ -1,0 +1,8 @@
+
+--- Testing gemini-2.5-flash-native-audio-preview-12-2025 ---
+[No config]: INIT SUCCESS
+[No config]: Received msg
+[System Instruction only]: INIT SUCCESS
+[System Instruction only]: Received msg
+[Tools only]: INIT SUCCESS
+[Tools only]: Received msg

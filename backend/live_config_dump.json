@@ -1,0 +1,172 @@
+{
+  "response_modalities": [
+    "AUDIO"
+  ],
+  "system_instruction": "<TRUNCATED>",
+  "tools": [
+    {
+      "function_declarations": [
+        {
+          "description": "\n    Analyzes a resume from plain text input and extracts structured data\n    including skills, experience, education, and career level.\n\n    Args:\n        resume_text: The plain text content of the user's resume.\n\n    Returns:\n        A JSON string with name, skills, experience, education, career level, etc.\n    ",
+          "name": "live_analyze_resume",
+          "parameters": {
+            "properties": {
+              "resume_text": {
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "resume_text"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "description": "\n    Analyzes a resume from an uploaded file (PDF or image) using vision.\n\n    Args:\n        file_base64: Base64-encoded string of the resume file.\n        mime_type: MIME type of the file, e.g. \"application/pdf\" or \"image/png\".\n\n    Returns:\n        A JSON string with name, skills, experience, education, career level, etc.\n    ",
+          "name": "live_analyze_resume_vision",
+          "parameters": {
+            "properties": {
+              "file_base64": {
+                "type": "STRING"
+              },
+              "mime_type": {
+                "default": "application/pdf",
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "file_base64"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "description": "\n    Compares the user's current skills against the requirements for a target role.\n\n    Args:\n        current_skills_csv: Comma-separated list of the user's current skills.\n        target_role: The job title or role the user is targeting.\n        location: Optional geographic location for salary/market context.\n        user_profile_json: JSON string of user profile data for personalised analysis.\n\n    Returns:\n        A JSON string with required_skills, missing_skills, match_percentage, etc.\n    ",
+          "name": "live_analyze_skill_gap",
+          "parameters": {
+            "properties": {
+              "current_skills_csv": {
+                "type": "STRING"
+              },
+              "target_role": {
+                "type": "STRING"
+              },
+              "location": {
+                "default": "",
+                "type": "STRING"
+              },
+              "user_profile_json": {
+                "default": "{}",
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "current_skills_csv",
+              "target_role"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "description": "\n    Searches the live job market for salary data, demand trends,\n    top employers, and hiring insights for a given role and location.\n\n    Args:\n        role: The job title to research (e.g. \"Product Marketing Manager\").\n        location: Geographic location for market context.\n        user_profile_json: JSON string of user profile data for personalised results.\n\n    Returns:\n        A JSON string with salary data, demand trends, top employers, etc.\n    ",
+          "name": "live_search_job_market",
+          "parameters": {
+            "properties": {
+              "role": {
+                "type": "STRING"
+              },
+              "location": {
+                "default": "",
+                "type": "STRING"
+              },
+              "user_profile_json": {
+                "default": "{}",
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "role"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "description": "\n    Generates a personalised career roadmap with short-term tactics and long-term vision.\n\n    Args:\n        profile_json: JSON string of the user's profile.\n        target_role: The target role for the career transition.\n        skill_gaps_csv: Comma-separated list of skills the user needs to learn.\n        timeline_months: Number of months for the roadmap (as a string).\n        preferences: Any additional preference text.\n        user_profile_json: JSON string of user profile data.\n\n    Returns:\n        A JSON string with phased career roadmap, milestones, and action items.\n    ",
+          "name": "live_generate_career_roadmap",
+          "parameters": {
+            "properties": {
+              "profile_json": {
+                "type": "STRING"
+              },
+              "target_role": {
+                "type": "STRING"
+              },
+              "skill_gaps_csv": {
+                "type": "STRING"
+              },
+              "timeline_months": {
+                "default": "12",
+                "type": "STRING"
+              },
+              "preferences": {
+                "default": "",
+                "type": "STRING"
+              },
+              "user_profile_json": {
+                "default": "{}",
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "profile_json",
+              "target_role",
+              "skill_gaps_csv"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "description": "\n    Finds the best learning resources for each priority skill gap.\n\n    Args:\n        skill_gaps_csv: Comma-separated list of skills to find courses for.\n        learning_style: Preferred format \u2014 \"video\", \"text\", or \"interactive\".\n        user_profile_json: JSON string of user profile data.\n\n    Returns:\n        A JSON string mapping each skill name to its curated resource list.\n    ",
+          "name": "live_find_courses",
+          "parameters": {
+            "properties": {
+              "skill_gaps_csv": {
+                "type": "STRING"
+              },
+              "learning_style": {
+                "default": "video",
+                "type": "STRING"
+              },
+              "user_profile_json": {
+                "default": "{}",
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "skill_gaps_csv"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "description": "\n    Generates a professional PDF career roadmap report.\n\n    Args:\n        career_data_json: JSON string containing the career plan data.\n        user_name: The user's name for the report.\n\n    Returns:\n        A base64-encoded PDF string.\n    ",
+          "name": "live_generate_pdf_report",
+          "parameters": {
+            "properties": {
+              "career_data_json": {
+                "default": "{}",
+                "type": "STRING"
+              },
+              "user_name": {
+                "default": "Career Seeker",
+                "type": "STRING"
+              }
+            },
+            "required": [],
+            "type": "OBJECT"
+          }
+        }
+      ]
+    }
+  ]
+}

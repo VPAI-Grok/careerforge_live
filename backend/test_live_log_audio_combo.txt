@@ -1,0 +1,5 @@
+
+--- Testing gemini-2.5-flash-native-audio-preview-12-2025 ---
+[Tools AND Instruction AND Text]: INIT SUCCESS
+[Tools AND Instruction AND Text]: SENT CONTENT
+[Tools AND Instruction AND Text]: Received msg
