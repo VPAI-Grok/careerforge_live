@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ⚡ CareerForge — AI Career Coach
 
 > **Talk to Forge, your AI career counselor.** Upload your resume, have a natural voice conversation, and get a personalised career roadmap with real-time job market data — all in minutes.
@@ -208,3 +209,6 @@ Built with ❤️ for the Gemini Live Agent Challenge
 ## 📝 License
 
 MIT
+=======
+# careerforge_live
+>>>>>>> c67d1dfad7c4e9f623a40d4d39e297199d13e947
