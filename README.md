@@ -203,7 +203,7 @@ geminiagentchallenge/
 
 ## 👥 Team
 
-Built with ❤️ for the Gemini Live Agent Challenge
+Vatsal Patel
 
 ## 📝 License
 
