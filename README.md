@@ -210,4 +210,3 @@ Built with ❤️ for the Gemini Live Agent Challenge
 MIT
 =======
 # careerforge_live
->>>>>>> c67d1dfad7c4e9f623a40d4d39e297199d13e947
