@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ⚡ CareerForge — AI Career Coach
 
 > **Talk to Forge, your AI career counselor.** Upload your resume, have a natural voice conversation, and get a personalised career roadmap with real-time job market data — all in minutes.
