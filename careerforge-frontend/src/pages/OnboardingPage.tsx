@@ -717,7 +717,7 @@ export default function OnboardingPage() {
                             onClick={() => handleSubmit('live')}
                             disabled={submitting}
                             id="onboard-submit-live-btn"
-                            style={{ flex: 1, background: 'linear-gradient(135deg, #22c55e, #16a34a)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                            style={{ flex: 1, background: 'linear-gradient(135deg, var(--forge-success-light), var(--forge-success))', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                         >
                             {submitting ? (
                                 <><div className="spinner" /> Loading...</>

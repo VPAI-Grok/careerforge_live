@@ -319,9 +319,14 @@ export function useLiveAgent(): UseLiveAgentReturn {
             // Initialize audio player FIRST (must be in user gesture context)
             await initPlayer();
 
-            const ws = new WebSocket(
+            const wsUrl = new URL(
                 `${WS_BASE}/ws/live/${encodeURIComponent(userId)}/${encodeURIComponent(sessionId)}`
             );
+            const apiKey = localStorage.getItem('gemini_api_key');
+            if (apiKey) {
+                wsUrl.searchParams.append('api_key', apiKey);
+            }
+            const ws = new WebSocket(wsUrl.toString());
             ws.binaryType = 'arraybuffer';
 
             ws.onopen = async () => {

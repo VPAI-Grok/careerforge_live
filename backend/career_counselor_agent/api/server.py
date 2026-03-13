@@ -23,6 +23,31 @@ from google.adk.agents.live_request_queue import LiveRequest, LiveRequestQueue
 from google.adk.runners import RunConfig
 from pydantic import BaseModel, Field
 import io
+import contextvars
+from typing import Annotated
+from fastapi import Header, Query
+
+# Context variable to hold API key per request
+api_key_ctx = contextvars.ContextVar('api_key', default=None)
+
+# --- Monkey-patch ADK Gemini model to support dynamic API keys per request ---
+from google.adk.models.google_llm import Gemini
+from google import genai
+
+@property
+def dynamic_api_client(self) -> getattr(genai, 'Client'):
+    key = api_key_ctx.get()
+    if key:
+        return genai.Client(api_key=key)
+    
+    # Fallback to default behavior (cached)
+    if not hasattr(self, '_default_client'):
+        self._default_client = genai.Client()
+    return self._default_client
+
+# Overwrite the @cached_property with our dynamic property
+Gemini.api_client = dynamic_api_client
+# -----------------------------------------------------------------------------
 
 # Suppress Pydantic serialization warnings for live streaming
 warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
@@ -150,8 +175,9 @@ async def health():
 
 
 @app.post("/chat", response_model=ChatResponse)
-async def chat(req: ChatRequest):
+async def chat(req: ChatRequest, x_api_key: Annotated[str | None, Header()] = None):
     """Text-based chat with Forge — the main conversational endpoint."""
+    api_key_ctx.set(x_api_key)
     session_id = req.session_id or str(uuid.uuid4())
 
     # Create a new session if it doesn't exist yet
@@ -231,11 +257,12 @@ from career_counselor_agent.tools.pdf_generator import generate_pdf_report
 from google import genai
 
 @app.post("/generate-report")
-async def generate_report(req: GenerateReportRequest):
+async def generate_report(req: GenerateReportRequest, x_api_key: Annotated[str | None, Header()] = None):
     """
     Called after a live session ends. Replaces the slow agent ADK loop with a fast,
     deterministic python sequence: Extract data -> Run tools -> Generate Markdown & PDF.
     """
+    api_key_ctx.set(x_api_key)
     session_id = req.session_id
     user_id = req.user_id
 
@@ -268,7 +295,8 @@ async def generate_report(req: GenerateReportRequest):
     full_prompt = "\n".join(prompt_lines)
     logger.info("Generating FAST report for session=%s", session_id)
 
-    client = genai.Client()
+    api_key = api_key_ctx.get()
+    client = genai.Client(api_key=api_key) if api_key else genai.Client()
 
     try:
         # 1. Fast Extraction
@@ -372,11 +400,13 @@ async def upload_resume(
     file: UploadFile = File(...),
     session_id: str | None = Form(None),
     user_id: str = Form("user_01"),
+    x_api_key: Annotated[str | None, Header()] = None
 ):
     """
     Upload a resume file (PDF or image) for direct vision-based extraction.
     Returns structured resume data for onboarding pre-population.
     """
+    api_key_ctx.set(x_api_key)
     from career_counselor_agent.tools.resume import analyze_resume_vision
 
     session_id = session_id or str(uuid.uuid4())
@@ -472,11 +502,12 @@ async def get_session_plan(session_id: str):
 
 
 @app.post("/profile")
-async def submit_profile(req: ProfileSubmitRequest):
+async def submit_profile(req: ProfileSubmitRequest, x_api_key: Annotated[str | None, Header()] = None):
     """
     Submit a user profile from the onboarding questionnaire.
     Creates a session and stores the profile for context injection.
     """
+    api_key_ctx.set(x_api_key)
     session_id = req.session_id or str(uuid.uuid4())
 
     # Build the UserProfile model
@@ -541,11 +572,12 @@ async def submit_profile(req: ProfileSubmitRequest):
 
 # ── WebSocket endpoint for real-time streaming ───────────────────────────────
 @app.websocket("/ws/chat/{session_id}")
-async def websocket_chat(websocket: WebSocket, session_id: str):
+async def websocket_chat(websocket: WebSocket, session_id: str, api_key: str | None = Query(None)):
     """
     WebSocket endpoint for real-time text streaming with Forge.
     Sends partial responses as they arrive from the ADK runner.
     """
+    api_key_ctx.set(api_key)
     await websocket.accept()
     user_id = "user_01"
 
@@ -617,11 +649,13 @@ async def websocket_live(
     websocket: WebSocket,
     user_id: str,
     session_id: str,
+    api_key: str | None = Query(None)
 ) -> None:
     """
     Live bidirectional streaming endpoint using Gemini's native audio.
     Follows the official ADK bidi-demo pattern exactly.
     """
+    api_key_ctx.set(api_key)
     logger.info(
         "Live WS connection: user_id=%s, session_id=%s", user_id, session_id,
     )

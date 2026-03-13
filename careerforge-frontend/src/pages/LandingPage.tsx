@@ -13,17 +13,44 @@ import {
     ArrowRight,
     Zap,
 } from 'lucide-react';
+import { SettingsModal } from '../components/SettingsModal';
 import './LandingPage.css';
 
 export default function LandingPage() {
     const navigate = useNavigate();
     const [uploading, setUploading] = useState(false);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+
+    const checkApiKeyAndExecute = useCallback((action: () => void) => {
+        const hasKey = localStorage.getItem('gemini_api_key');
+        const bypassKey = sessionStorage.getItem('skip_api_key');
+        if (!hasKey && !bypassKey) {
+            setPendingAction(() => action);
+            setIsSettingsOpen(true);
+            return false;
+        }
+        action();
+        return true;
+    }, []);
+
+    const handleModalClose = () => {
+        setIsSettingsOpen(false);
+        const hasKey = localStorage.getItem('gemini_api_key');
+        const bypassKey = sessionStorage.getItem('skip_api_key');
+        if ((hasKey || bypassKey) && pendingAction) {
+            pendingAction();
+            setPendingAction(null);
+        }
+    };
 
     const onDrop = useCallback(
         async (acceptedFiles: File[]) => {
             if (acceptedFiles.length === 0) return;
-            const file = acceptedFiles[0];
-            setUploading(true);
+            
+            checkApiKeyAndExecute(async () => {
+                const file = acceptedFiles[0];
+                setUploading(true);
 
             try {
                 const formData = new FormData();
@@ -48,8 +75,9 @@ export default function LandingPage() {
             } finally {
                 setUploading(false);
             }
+        });
         },
-        [navigate]
+        [navigate, checkApiKeyAndExecute]
     );
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -73,6 +101,8 @@ export default function LandingPage() {
                 <div className="bg-orb bg-orb-3" />
                 <div className="bg-grid" />
             </div>
+
+            <SettingsModal isOpen={isSettingsOpen} onClose={handleModalClose} />
 
             {/* Hero Section */}
             <motion.header
@@ -136,7 +166,7 @@ export default function LandingPage() {
                         {/* Start Live Voice Session */}
                         <motion.button
                             className="btn btn-primary btn-lg start-live-btn"
-                            onClick={() => navigate('/live/new')}
+                            onClick={() => checkApiKeyAndExecute(() => navigate('/live/new'))}
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
                             id="start-live-btn"
@@ -155,7 +185,7 @@ export default function LandingPage() {
                         {/* Start Text Chat Button */}
                         <motion.button
                             className="btn btn-primary btn-lg start-talking-btn"
-                            onClick={() => navigate('/onboarding')}
+                            onClick={() => checkApiKeyAndExecute(() => navigate('/onboarding'))}
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
                             id="start-talking-btn"

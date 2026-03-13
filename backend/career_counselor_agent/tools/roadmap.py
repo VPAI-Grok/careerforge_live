@@ -9,7 +9,9 @@ from google import genai
 
 
 def _get_client() -> genai.Client:
-    return genai.Client()
+    from career_counselor_agent.api.server import api_key_ctx
+    key = api_key_ctx.get()
+    return genai.Client(api_key=key) if key else genai.Client()
 
 
 def _parse_json(raw: str) -> dict:

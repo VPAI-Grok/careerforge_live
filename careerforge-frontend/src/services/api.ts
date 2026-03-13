@@ -4,6 +4,19 @@
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
+export function getApiKey(): string | null {
+  return localStorage.getItem('gemini_api_key');
+}
+
+function getAuthHeaders(existingHeaders: Record<string, string> = {}): Record<string, string> {
+  const headers = { ...existingHeaders };
+  const apiKey = getApiKey();
+  if (apiKey) {
+    headers['x-api-key'] = apiKey;
+  }
+  return headers;
+}
+
 export interface ChatResponse {
   session_id: string;
   response: string;
@@ -58,7 +71,7 @@ export async function submitProfile(
 ): Promise<ProfileResponse> {
   const res = await fetch(`${API_BASE}/profile`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify({
       ...profile,
       session_id: sessionId || null,
@@ -76,7 +89,7 @@ export async function sendMessage(
 ): Promise<ChatResponse> {
   const res = await fetch(`${API_BASE}/chat`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
     body: JSON.stringify({
       message,
       session_id: sessionId || null,
@@ -98,6 +111,7 @@ export async function uploadResume(
 
   const res = await fetch(`${API_BASE}/upload-resume`, {
     method: 'POST',
+    headers: getAuthHeaders(),
     body: formData,
   });
   if (!res.ok) throw new Error(`Upload failed: ${res.statusText}`);
@@ -111,7 +125,9 @@ export function getPdfDownloadUrl(sessionId: string): string {
 
 /** Fetch the career plan data for dashboard display */
 export async function getSessionPlan(sessionId: string) {
-  const res = await fetch(`${API_BASE}/session/${sessionId}/plan`);
+  const res = await fetch(`${API_BASE}/session/${sessionId}/plan`, {
+    headers: getAuthHeaders(),
+  });
   if (!res.ok) throw new Error(`Failed to fetch plan: ${res.statusText}`);
   return res.json();
 }
@@ -132,7 +148,12 @@ export function createChatWebSocket(
   onClose?: () => void
 ): WebSocket {
   const wsBase = API_BASE.replace(/^http/, 'ws');
-  const ws = new WebSocket(`${wsBase}/ws/chat/${sessionId}`);
+  const wsUrl = new URL(`${wsBase}/ws/chat/${sessionId}`);
+  const apiKey = getApiKey();
+  if (apiKey) {
+    wsUrl.searchParams.append('api_key', apiKey);
+  }
+  const ws = new WebSocket(wsUrl.toString());
 
   ws.onmessage = (event) => {
     const data = JSON.parse(event.data);

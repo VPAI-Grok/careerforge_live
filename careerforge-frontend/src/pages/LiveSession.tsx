@@ -371,58 +371,85 @@ export default function LiveSession() {
                         {/* Avatar / Visualizer */}
                         <div className="live-avatar-area">
                             {live.status === 'connecting' ? (
-                                <div className="live-avatar">
-                                    <Loader2 size={40} className="spin" />
+                                <div className="live-orb-container">
+                                    <div className="live-avatar">
+                                        <Loader2 size={40} className="spin" />
+                                    </div>
                                 </div>
                             ) : (
                                 <>
-                                    <motion.div
-                                        className={`live-avatar ${live.isForgeSpeaking
-                                            ? 'avatar-speaking'
-                                            : live.isMicActive
-                                                ? 'avatar-listening'
-                                                : ''
-                                            }`}
-                                        animate={{
-                                            scale: live.isForgeSpeaking
-                                                ? [1, 1.08, 1, 1.05, 1]
-                                                : live.isMicActive
-                                                    ? [1, 1.03, 1]
-                                                    : 1,
-                                        }}
-                                        transition={{
-                                            duration: live.isForgeSpeaking ? 1.2 : 2,
-                                            repeat: Infinity,
-                                            ease: 'easeInOut',
-                                        }}
-                                    >
-                                        <Sparkles size={40} />
-                                    </motion.div>
+                                    <div className="live-orb-container">
+                                        {/* Advanced Pulsing rings when speaking or listening */}
+                                        <AnimatePresence>
+                                            {(live.isForgeSpeaking || live.isMicActive) && (
+                                                <>
+                                                    {[0, 1, 2, 3].map((i) => (
+                                                        <motion.div
+                                                            key={i}
+                                                            className={`pulse-ring ${live.isForgeSpeaking ? 'ring-speaking' : 'ring-listening'}`}
+                                                            initial={{ scale: 1, opacity: live.isForgeSpeaking ? 0.8 : 0.4 }}
+                                                            animate={{ scale: live.isForgeSpeaking ? 2.0 + i * 0.4 : 1.5 + i * 0.2, opacity: 0 }}
+                                                            transition={{
+                                                                duration: live.isForgeSpeaking ? 1.5 : 3,
+                                                                repeat: Infinity,
+                                                                delay: i * (live.isForgeSpeaking ? 0.2 : 0.6),
+                                                                ease: 'easeOut',
+                                                            }}
+                                                        />
+                                                    ))}
+                                                </>
+                                            )}
+                                        </AnimatePresence>
 
-                                    {/* Pulsing rings when speaking */}
-                                    <AnimatePresence>
-                                        {live.isForgeSpeaking && (
-                                            <>
-                                                {[0, 1, 2].map((i) => (
-                                                    <motion.div
-                                                        key={i}
-                                                        className="pulse-ring"
-                                                        initial={{ scale: 1, opacity: 0.6 }}
-                                                        animate={{ scale: 2.5 + i * 0.3, opacity: 0 }}
-                                                        transition={{
-                                                            duration: 2,
-                                                            repeat: Infinity,
-                                                            delay: i * 0.4,
-                                                            ease: 'easeOut',
-                                                        }}
-                                                    />
-                                                ))}
-                                            </>
-                                        )}
-                                    </AnimatePresence>
+                                        <motion.div
+                                            className={`live-avatar ${live.isForgeSpeaking
+                                                ? 'avatar-speaking'
+                                                : live.isMicActive
+                                                    ? 'avatar-listening'
+                                                    : 'avatar-idle'
+                                                }`}
+                                            animate={{
+                                                scale: live.isForgeSpeaking
+                                                    ? [1, 1.15, 1]
+                                                    : live.isMicActive
+                                                        ? [1, 1.05, 1]
+                                                        : [1, 1.02, 1],
+                                                borderRadius: live.isForgeSpeaking 
+                                                    ? [
+                                                        "40% 60% 70% 30% / 40% 50% 60% 50%",
+                                                        "60% 40% 30% 70% / 60% 30% 70% 40%",
+                                                        "30% 70% 70% 30% / 30% 30% 70% 70%",
+                                                        "40% 60% 70% 30% / 40% 50% 60% 50%"
+                                                    ] 
+                                                    : [
+                                                        "50% 50% 50% 50% / 50% 50% 50% 50%",
+                                                        "52% 48% 51% 49% / 51% 49% 52% 48%",
+                                                        "50% 50% 50% 50% / 50% 50% 50% 50%"
+                                                    ],
+                                                rotate: live.isForgeSpeaking ? [0, 90, 180, 270, 360] : [0, 10, -10, 0],
+                                            }}
+                                            transition={{
+                                                scale: {
+                                                    duration: live.isForgeSpeaking ? 0.8 : 3,
+                                                    repeat: Infinity,
+                                                    ease: 'easeInOut',
+                                                },
+                                                borderRadius: {
+                                                    duration: live.isForgeSpeaking ? 4 : 8,
+                                                    repeat: Infinity,
+                                                    ease: 'easeInOut',
+                                                },
+                                                rotate: {
+                                                    duration: live.isForgeSpeaking ? 8 : 15,
+                                                    repeat: Infinity,
+                                                    ease: 'linear',
+                                                }
+                                            }}
+                                        />
+                                    </div>
                                 </>
                             )}
-
+                            
                             {/* Status text */}
                             <p className={`live-status-text ${getStatusColor()}`}>
                                 {live.status === 'connecting' && <Loader2 size={14} className="spin" />}
