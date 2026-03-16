@@ -62,7 +62,7 @@ gcloud run deploy "${BACKEND_SERVICE}" \
     --set-env-vars "GOOGLE_API_KEY=${GOOGLE_API_KEY},GOOGLE_GENAI_USE_VERTEXAI=FALSE" \
     --memory 1Gi \
     --cpu 1 \
-    --timeout 300 \
+    --timeout 1200 \
     --session-affinity \
     --min-instances 0 \
     --max-instances 3 \
